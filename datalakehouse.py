@@ -39,7 +39,6 @@ for container, mount_point in containers.items():
 
 dbutils.fs.ls("/mnt/bronze/inputs")
 
-
 # COMMAND ----------
 
 # MAGIC %md
