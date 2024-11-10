@@ -9,31 +9,37 @@
 
 # COMMAND ----------
 
-storage_account_name = "conatinerdemo23"
-sas_token = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2024-11-10T02:51:03Z&st=2024-11-09T18:51:03Z&spr=https,http&sig=YSQ%2Fp68q9SOOiaVBpAOvSfNTtXQJ64VXnU1JVaqtxEo%3D"
+new_sas_token = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-08-04T18:26:58Z&st=2024-11-10T11:26:58Z&spr=https,http&sig=ANR8pgKvpaMYsbLa7Xb6uHhGUY7SEXFNdHMj20o9n8s%3D"
 
+storage_account_name = "conatinerdemo23"
 containers = {
-    "bronze": f"/mnt/bronze",
-    "silver": f"/mnt/silver",
-    "gold": f"/mnt/gold"
+    "bronze": "/mnt/bronze",
+    "silver": "/mnt/silver",
+    "gold": "/mnt/gold"
 }
 
-def mount_container(container_name, mount_point):
-    if not any(mount.mountPoint == mount_point for mount in dbutils.fs.mounts()):
+def remount_container(container_name, mount_point, sas_token):
+    # Démonter le point de montage s'il existe
+    if any(mount.mountPoint == mount_point for mount in dbutils.fs.mounts()):
         try:
-            dbutils.fs.mount(
-                source=f"wasbs://{container_name}@{storage_account_name}.blob.core.windows.net",
-                mount_point=mount_point,
-                extra_configs={f"fs.azure.sas.{container_name}.{storage_account_name}.blob.core.windows.net": sas_token}
-            )
-            print(f"Montage réussi sur {mount_point}")
+            dbutils.fs.unmount(mount_point)
+            print(f"Point de montage {mount_point} démonté avec succès.")
         except Exception as e:
-            print(f"Erreur lors du montage du conteneur {container_name}: {e}")
-    else:
-        print(f"Le conteneur {container_name} est déjà monté sur {mount_point}")
+            print(f"Erreur lors du démontage de {mount_point} : {e}")
+    
+    # Remonter le conteneur 
+    try:
+        dbutils.fs.mount(
+            source=f"wasbs://{container_name}@{storage_account_name}.blob.core.windows.net",
+            mount_point=mount_point,
+            extra_configs={f"fs.azure.sas.{container_name}.{storage_account_name}.blob.core.windows.net": sas_token}
+        )
+        print(f"Montage réussi de {container_name} sur {mount_point} avec le nouveau SAS.")
+    except Exception as e:
+        print(f"Erreur lors du montage de {container_name} : {e}")
 
-for container, mount_point in containers.items():
-    mount_container(container, mount_point)
+for container_name, mount_point in containers.items():
+    remount_container(container_name, mount_point, new_sas_token)
 
 # COMMAND ----------
 
