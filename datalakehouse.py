@@ -104,6 +104,11 @@ spark.sql(f"CREATE TABLE IF NOT EXISTS covid_data USING DELTA LOCATION '{delta_p
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC use catalog `hive_metastore`; select * from `default`.`covid_data` limit 100;
+
+# COMMAND ----------
+
 spark.sql(f"DROP TABLE IF EXISTS covid_data_test ")
 
 # COMMAND ----------
