@@ -109,16 +109,9 @@ spark.sql(f"CREATE TABLE IF NOT EXISTS covid_data USING DELTA LOCATION '{delta_p
 
 # COMMAND ----------
 
-spark.sql(f"DROP TABLE IF EXISTS covid_data_test ")
+spark.sql(f"DROP TABLE IF EXISTS covid_data_test ") # TEST
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Suppression d'une ligne et mise à jour d'une autre
-
-# COMMAND ----------
-
-# MAGIC %sql 
-# MAGIC DELETE 
-# MAGIC FROM default.covid_data
-# MAGIC where id = 28
