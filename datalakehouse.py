@@ -115,3 +115,17 @@ spark.sql(f"DROP TABLE IF EXISTS covid_data_test ") # TEST
 
 # MAGIC %md
 # MAGIC ## Suppression d'une ligne et mise à jour d'une autre
+
+# COMMAND ----------
+
+# MAGIC %sql 
+# MAGIC DELETE 
+# MAGIC FROM default.covid_data
+# MAGIC where id = 28
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC update default.covid_data
+# MAGIC set confirmed = 66
+# MAGIC where id = 442
