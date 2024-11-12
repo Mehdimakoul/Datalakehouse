@@ -129,3 +129,8 @@ spark.sql(f"DROP TABLE IF EXISTS covid_data_test ") # TEST
 # MAGIC update default.covid_data
 # MAGIC set confirmed = 66
 # MAGIC where id = 442
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **L'affichage de  l'historique des version de la table covid_data sous forma delta lake qui nous a permet la traçabilité des données**
