@@ -164,3 +164,13 @@ Covid_update_df.createOrReplaceTempView('updates')
 # MAGIC     UPDATE SET *
 # MAGIC WHEN NOT MATCHED THEN
 # MAGIC     INSERT *
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # Dernier partie sauvegarder les données dans le conteneur 'gold'
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Charger les données mises à jour depuis la table covid_data**
