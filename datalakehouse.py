@@ -174,3 +174,12 @@ Covid_update_df.createOrReplaceTempView('updates')
 
 # MAGIC %md
 # MAGIC > **Charger les données mises à jour depuis la table covid_data**
+
+# COMMAND ----------
+
+covid_df = spark.table("default.covid_data")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Sauvegarder les données dans le conteneur 'gold' au format Parquet ou Delta ou Csv (Données structurée)**
