@@ -129,3 +129,57 @@ spark.sql(f"DROP TABLE IF EXISTS covid_data_test ") # TEST
 # MAGIC update default.covid_data
 # MAGIC set confirmed = 66
 # MAGIC where id = 442
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **L'affichage de  l'historique des version de la table covid_data sous forma delta lake qui nous a permet la traçabilité des données**
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DESCRIBE HISTORY default.covid_data
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Creation d'une vue temporaire à partir du dataframe covid_update_df**
+
+# COMMAND ----------
+
+Covid_update_df.createOrReplaceTempView('updates')
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Merge de Covid_update_df vers la table covid_data pour retrouver la ligne supprimé et remettre à jour la ligne**
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC MERGE INTO default.covid_data AS covid_silver
+# MAGIC USING updates
+# MAGIC ON covid_silver.id = updates.id
+# MAGIC WHEN MATCHED THEN
+# MAGIC     UPDATE SET *
+# MAGIC WHEN NOT MATCHED THEN
+# MAGIC     INSERT *
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # Dernier partie sauvegarder les données dans le conteneur 'gold'
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Charger les données mises à jour depuis la table covid_data**
+
+# COMMAND ----------
+
+covid_df = spark.table("default.covid_data")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Sauvegarder les données dans le conteneur 'gold' au format Parquet ou Delta ou Csv (Données structurée)**
