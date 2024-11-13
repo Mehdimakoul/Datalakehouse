@@ -139,3 +139,28 @@ spark.sql(f"DROP TABLE IF EXISTS covid_data_test ") # TEST
 
 # MAGIC %sql
 # MAGIC DESCRIBE HISTORY default.covid_data
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Creation d'une vue temporaire à partir du dataframe covid_update_df**
+
+# COMMAND ----------
+
+Covid_update_df.createOrReplaceTempView('updates')
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Merge de Covid_update_df vers la table covid_data pour retrouver la ligne supprimé et remettre à jour la ligne**
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC MERGE INTO default.covid_data AS covid_silver
+# MAGIC USING updates
+# MAGIC ON covid_silver.id = updates.id
+# MAGIC WHEN MATCHED THEN
+# MAGIC     UPDATE SET *
+# MAGIC WHEN NOT MATCHED THEN
+# MAGIC     INSERT *
