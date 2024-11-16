@@ -192,3 +192,12 @@ covid_df.coalesce(1).write.mode("overwrite").format("csv").option("header", "tru
 
 print("Données sauvegardées avec succès dans le conteneur 'gold' au format CSV pour analyses BI")
 
+
+# COMMAND ----------
+
+dbutils.fs.ls('/mnt/gold/')
+
+# COMMAND ----------
+
+path1='/mnt/gold/covid_data_final'
+
