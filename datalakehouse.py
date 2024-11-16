@@ -183,3 +183,12 @@ covid_df = spark.table("default.covid_data")
 
 # MAGIC %md
 # MAGIC > **Sauvegarder les données dans le conteneur 'gold' au format Parquet ou Delta ou Csv (Données structurée)**
+
+# COMMAND ----------
+
+destination_path = "/mnt/gold/covid_data_final"
+covid_df.coalesce(1).write.mode("overwrite").format("csv").option("header", "true").save(destination_path)
+# covid_df.coalesce(1).write.mode("overwrite").format("parquet").save(destination_path) #
+
+print("Données sauvegardées avec succès dans le conteneur 'gold' au format CSV pour analyses BI")
+
