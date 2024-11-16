@@ -201,3 +201,12 @@ dbutils.fs.ls('/mnt/gold/')
 
 path1='/mnt/gold/covid_data_final'
 
+
+# COMMAND ----------
+
+spark.sql(f"""
+    CREATE TABLE IF NOT EXISTS covid_data_final
+    USING CSV
+    OPTIONS (header = 'true', inferSchema = 'true', delimiter = ',')
+    LOCATION '{path1}'
+""")
